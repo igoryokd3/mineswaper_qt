@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/1_cell.bmp</file>
+        <file>image/2_cell.bmp</file>
+        <file>image/3_cell.bmp</file>
+        <file>image/default_cell.bmp</file>
+        <file>image/flag_cell.bmp</file>
+        <file>image/mine_cell.bmp</file>
+        <file>image/open_cell.bmp</file>
+    </qresource>
+</RCC>
