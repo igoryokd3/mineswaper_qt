@@ -16,7 +16,7 @@ SOURCES += main.cpp\
         mainwindow.cpp
 
 HEADERS  += mainwindow.h \
-    button.h
+    mybutton.h
 
 FORMS    += mainwindow.ui
 

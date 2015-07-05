@@ -1,8 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "mainwindow.h"
+#include "mybutton.h"
 #include <QMainWindow>
+#include <QMouseEvent>
 
 namespace Ui {
 class MainWindow;
@@ -15,11 +16,10 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
 private slots:
+    //void mousePressEvent(QMouseEvent *e);
+     void changeState();
     void on_pushButton_clicked();
-
-    void changeState();
 
     void on_pushButton_2_clicked();
 
@@ -35,6 +35,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    bool flag;
+    mybutton *pushButton_2;
 };
 
 #endif // MAINWINDOW_H

@@ -38,29 +38,6 @@
     </property>
     <layout class="QGridLayout" name="gridLayout"/>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>130</y>
-      <width>64</width>
-      <height>64</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="icon">
-     <iconset resource="sourse.qrc">
-      <normaloff>:/image/default_cell.bmp</normaloff>:/image/default_cell.bmp</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>64</width>
-      <height>64</height>
-     </size>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton_3">
     <property name="geometry">
      <rect>
@@ -190,8 +167,6 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="sourse.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
