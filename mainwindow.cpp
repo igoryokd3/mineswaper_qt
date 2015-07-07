@@ -9,27 +9,29 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     flag=false;
-  pushButton_2 = new mybutton(this);
-   connect(pushButton_2, SIGNAL(rightClicked()), this, SLOT(changeState()));
+   pushButton_2 = new mybutton(this);
    pushButton_2->setGeometry(150,150,64,64);
    pushButton_2->setIconSize(QSize(64,64));
    pushButton_2->setIcon(QIcon(":/image/default_cell.bmp"));
+
+   for (int i = 0; i < 5; i++)
+   {
+        arr[i] = new mybutton(this);
+
+        ui->gridLayout_2->addWidget(arr[i]);
+        connect(arr[i], SIGNAL(rightClicked()), this, SLOT(changeState()));
+        connect(arr[i], SIGNAL(leftClicked()), this, SLOT(click()));
+
+
+   }
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-/*
-void MainWindow::mousePressEvent(QMouseEvent *e)
-{
-    if(e->button() == Qt::RightButton)
-    {
 
-        changeState();
-        //emit  rClicked();
-    }
-}*/
 void MainWindow::on_pushButton_clicked()
 {
     QPushButton *button = new QPushButton(this);
@@ -38,17 +40,12 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::changeState()
 {
-    if(flag)
-    {
-        pushButton_2->setIcon(QIcon(":/image/default_cell.bmp"));
-        flag = false;
-    }
-    else
-    {
-        pushButton_2->setIcon(QIcon(":/image/flag_cell.bmp"));
-        flag = true;
-    }
+
 }
+void MainWindow::click()
+{}
+void MainWindow::both()
+{}
 
 void MainWindow::on_pushButton_2_clicked()
 {
@@ -79,3 +76,5 @@ void MainWindow::on_pushButton_2_pressed()
 {
     pushButton_2->setIcon(QIcon(":/image/press_cell.bmp"));
 }
+
+

@@ -1,6 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
+#include <vector>
 #include "mybutton.h"
 #include <QMainWindow>
 #include <QMouseEvent>
@@ -17,8 +17,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 private slots:
-    //void mousePressEvent(QMouseEvent *e);
      void changeState();
+    void click();
+    void both();
     void on_pushButton_clicked();
 
     void on_pushButton_2_clicked();
@@ -33,10 +34,14 @@ private slots:
 
     void on_pushButton_2_pressed();
 
+
+
 private:
     Ui::MainWindow *ui;
     bool flag;
     mybutton *pushButton_2;
+    mybutton* arr[100];
+
 };
 
 #endif // MAINWINDOW_H
