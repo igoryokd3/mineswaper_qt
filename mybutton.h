@@ -10,6 +10,7 @@ public:
     mybutton(QWidget *parent = 0):QPushButton(parent)
     {
         this->setIconSize(QSize(16,16));
+       // this->resize(QSize(16,16));
         this->setIcon(QIcon(":/image/default_cell.bmp"));
     }
 
@@ -19,17 +20,20 @@ protected:
         if(e->button() == Qt::MidButton)
             {
                 this->setIcon(QIcon(":/image/mine_cell.bmp"));
+                this->setText("");
                 emit bothClicked();
             }
 
             if(e->button() == Qt::RightButton)
                 {
                     this->setIcon(QIcon(":/image/flag_cell.bmp"));
+                    this->setText("");
                     emit rightClicked();
                 }
             if(e->button() == Qt::LeftButton)
                 {
                     this->setIcon(QIcon(":/image/open_cell.bmp"));
+                    this->setText("");
                     emit leftClicked();
                 }
 

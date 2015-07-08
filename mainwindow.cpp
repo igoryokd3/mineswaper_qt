@@ -9,21 +9,21 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     flag=false;
-   pushButton_2 = new mybutton(this);
-   pushButton_2->setGeometry(150,150,64,64);
-   pushButton_2->setIconSize(QSize(64,64));
-   pushButton_2->setIcon(QIcon(":/image/default_cell.bmp"));
+    for (int i = 0; i < 10; i++)
+    {
+           for (int j = 0; j < 10; j++)
+           {
+                arr[i][j] = new mybutton(this);
 
-   for (int i = 0; i < 5; i++)
-   {
-        arr[i] = new mybutton(this);
-
-        ui->gridLayout_2->addWidget(arr[i]);
-        connect(arr[i], SIGNAL(rightClicked()), this, SLOT(changeState()));
-        connect(arr[i], SIGNAL(leftClicked()), this, SLOT(click()));
-
-
-   }
+                ui->gridLayout_2->addWidget(arr[i][j],i,j);
+               // QString str = QString::number(i) + QString::number(j);
+               // arr[i][j]->setText(str);
+               // arr[i][j]->resize(16,16);
+               // connect(arr[i], SIGNAL(rightClicked()), this, SLOT(changeState()));
+                //connect(arr[i], SIGNAL(leftClicked()), this, SLOT(click()));
+           }
+    }
+   // ui->gridLayout_2->
 
 }
 
@@ -32,11 +32,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-    QPushButton *button = new QPushButton(this);
-    ui->gridLayout->addWidget(button);
-}
+
 
 void MainWindow::changeState()
 {
@@ -46,35 +42,5 @@ void MainWindow::click()
 {}
 void MainWindow::both()
 {}
-
-void MainWindow::on_pushButton_2_clicked()
-{
-    pushButton_2->setIcon(QIcon(":/image/open_cell.bmp"));
-}
-
-void MainWindow::on_pushButton_3_clicked()
-{
-    pushButton_2->setIcon(QIcon(":/image/1_cell.bmp"));
-}
-
-void MainWindow::on_pushButton_4_clicked()
-{
-    pushButton_2->setIcon(QIcon(":/image/2_cell.bmp"));
-}
-
-void MainWindow::on_pushButton_5_clicked()
-{
-    pushButton_2->setIcon(QIcon(":/image/3_cell.bmp"));
-}
-
-void MainWindow::on_pushButton_6_clicked()
-{
-    pushButton_2->setIcon(QIcon(":/image/mine_cell.bmp"));
-}
-
-void MainWindow::on_pushButton_2_pressed()
-{
-    pushButton_2->setIcon(QIcon(":/image/press_cell.bmp"));
-}
 
 
