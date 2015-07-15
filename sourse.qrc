@@ -7,5 +7,11 @@
         <file>image/flag_cell.bmp</file>
         <file>image/mine_cell.bmp</file>
         <file>image/open_cell.bmp</file>
+        <file>image/4_cell.bmp</file>
+        <file>image/5_cell.bmp</file>
+        <file>image/6_cell.bmp</file>
+        <file>image/7_cell.bmp</file>
+        <file>image/8_cell.bmp</file>
+        <file>image/pressed_cell.bmp</file>
     </qresource>
 </RCC>
