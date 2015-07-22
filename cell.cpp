@@ -1,6 +1,13 @@
 #include "cell.h"
 
 
+
+Cell::Cell()
+{
+    numberOfMineAround_ = 0;
+    cellOpen_ = false;
+    cellMarker_ = false;
+}
 Cell::Cell(QWidget *parent):QPushButton(parent)
 {
     numberOfMineAround_ = 0;
@@ -82,10 +89,30 @@ void Cell::setMine()
 {
     numberOfMineAround_ = -1;
 }
+void Cell::setMine(bool b)
+{
+    if(b)
+        numberOfMineAround_ = -1;
+    else
+        numberOfMineAround_ = 0;
+}
 void Cell::mousePressEvent(QMouseEvent *event)
 {
-  if (event->button() == Qt::LeftButton) emit clicked_left();
-  if (event->button() == Qt::RightButton) emit clicked_right();
+  if (event->button() == Qt::LeftButton)
+  {
+    //  set_cellOpen();
+      emit clicked_left();
+  }
+  if (event->button() == Qt::RightButton)
+  {
+     // change_cellMarker();
+      emit clicked_right();
+  }
   if (event->button() == Qt::MidButton) emit clicked_mid();
+}
+
+Cell & Cell::operator++(){
+    increment_numberOfMineAround();
+    return *this;
 }
 

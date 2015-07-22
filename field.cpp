@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <ctime>
 #include <QGridLayout>
+#include <ctime>
 
 
 
@@ -12,26 +13,86 @@ Field::Field(QWidget *parent): QWidget(parent)
    // fieldHeight_ = 9;
     countOfMine_ = 10;
     QGridLayout *layout = new QGridLayout(this);
+    cell = new Cell*[fieldHeight_];
+        for (int i = 0; i < fieldHeight_; ++i)
+            cell[i] = new Cell[fieldLength_];
     for (int i = 0; i < fieldHeight_; ++i)
     {
         for (int j = 0; j < fieldLength_; ++j)
         {
-            cell[i][j] = new Cell (this);
-            layout->addWidget(cell[i][j], i, j);
-            connect(cell[i][j], SIGNAL(clicked_left()), this, SLOT(on_DotClickedLeft()));
-            connect(cell[i][j], SIGNAL(clicked_right()), this, SLOT(on_DotClickedRight()));
+            layout->addWidget(&cell[i][j], i, j);
+            connect(&cell[i][j
+                    ], SIGNAL(clicked_left()), this, SLOT(on_DotClickedLeft()));
+            connect(&cell[i][j], SIGNAL(clicked_right()), this, SLOT(on_DotClickedRight()));
         }
     }
-    //completeField();
+
+    completeField();
+}
+void Field::completeField()
+{
+    srand((unsigned)time(0));
+    int pos_X, pos_Y;
+
+for (int i = 0; i < countOfMine_; ++i)
+  {
+        cell[i / fieldLength_][i % fieldLength_].setMine();
+  }
+
+for (int i = 0; i < countOfMine_; ++i)
+  {
+        bool mine;
+        pos_X = rand() % fieldLength_;
+        pos_Y = rand() % fieldHeight_;
+        mine = cell[i / fieldLength_][i % fieldLength_].ifMineContains();
+        cell[i / fieldLength_][i % fieldLength_].setMine(cell[pos_Y][pos_X].ifMineContains());
+        cell[pos_Y][pos_X].setMine(mine);
+  }
+    for (int i = 0; i < fieldHeight_; ++i)
+    {
+        for (int j = 0; j < fieldLength_; ++j)
+        {
+            if (cell[i][j].ifMineContains()){
+                if ((i - 1 >= 0) && (j - 1 >= 0) && !cell[i - 1][j - 1].ifMineContains() )
+                    ++cell[i - 1][j - 1];
+                if ((i - 1 >= 0) && !cell[i - 1][j].ifMineContains())
+                    ++cell[i - 1][j];
+                if ((i - 1 >= 0) && (j + 1 < fieldLength_) && !cell[i - 1][j + 1].ifMineContains())
+                    ++cell[i - 1][j + 1];
+                if ((j - 1 >= 0) && !cell[i][j - 1].ifMineContains())
+                    ++cell[i][j - 1];
+                if ((j + 1 <fieldLength_) && !cell[i][j + 1].ifMineContains())
+                    ++cell[i][j + 1];
+                if ((i + 1 <fieldHeight_) && (j - 1 >= 0) && !cell[i + 1][j - 1].ifMineContains())
+                    ++cell[i + 1][j - 1];
+                if ((i + 1 <fieldHeight_) && !cell[i + 1][j].ifMineContains())
+                    ++cell[i + 1][j];
+                if ((i + 1 <fieldHeight_) && (j + 1 < fieldLength_) && !cell[i + 1][j + 1].ifMineContains())
+                    ++cell[i + 1][j + 1];
+            }
+
+        }
+    }
+
 }
 void Field::on_DotClickedRight()
 {
   Cell *t = reinterpret_cast<Cell*>(sender());
+ // if(t->get_cellOpen())
+    //  return;
+  t->change_cellMarker();
 }
 
 void Field::on_DotClickedLeft()
 {
  Cell *t = reinterpret_cast<Cell*>(sender());
+ t->set_cellOpen();
+}
+
+Field::~Field()
+{
+    for (int i = 0; i < fieldHeight_; ++i)
+        delete [] (cell[i]);
 }
 /*
 Field::Field(int fieldLength, int fieldHeight, int countOfMine){

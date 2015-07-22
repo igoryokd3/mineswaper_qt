@@ -16,9 +16,9 @@ protected:
     bool cellMarker_;
     bool cellOpen_;
     int numberOfMineAround_;
-    QMybutton* button;
     void mousePressEvent(QMouseEvent *event);
 public:
+    Cell();
     Cell(QWidget *parent);
     bool get_cellMarker();
    // void set_cellMarker(bool);
@@ -33,6 +33,9 @@ public:
 
     bool ifMineContains();
     void setMine();
+    void setMine(bool);
+
+    Cell & operator++ ();
 
 };
 #endif // CELL

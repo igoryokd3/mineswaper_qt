@@ -23,20 +23,6 @@ HEADERS  += \
 
 
 RESOURCES += \
-    image/source.qrc
+    source.qrc
 
-DISTFILES += \
-    image/1_cell.bmp \
-    image/2_cell.bmp \
-    image/3_cell.bmp \
-    image/4_cell.bmp \
-    image/5_cell.bmp \
-    image/6_cell.bmp \
-    image/7_cell.bmp \
-    image/8_cell.bmp \
-    image/default_cell.bmp \
-    image/flag_cell.bmp \
-    image/mine_cell.bmp \
-    image/open_cell.bmp \
-    image/pressed_cell.bmp \
-    image/wrongflag_cell.bmp
+DISTFILES +=

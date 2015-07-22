@@ -11,10 +11,12 @@ protected:
     const static int fieldLength_=10;
     const static int fieldHeight_=10;
     int countOfMine_;
-    Cell* cell[fieldHeight_][fieldLength_];
+    int countFlagMine_;
+    Cell** cell;
     void completeField();
 public:
     Field(QWidget *parent = 0);
+    ~Field();
   /*  Field(int, int, int);
 
     void openCell(int, int);
