@@ -13,6 +13,8 @@ signals:
     void clicked_right();
     void clicked_mid();
 protected:
+    int pos_x_;
+    int pos_y_;
     bool cellMarker_;
     bool cellOpen_;
     int numberOfMineAround_;
@@ -31,11 +33,18 @@ public:
     int get_numberOfMineAround();
     void increment_numberOfMineAround();
 
+    int get_pos_x();
+    void set_pos_x(int);
+
+    int get_pos_y();
+    void set_pos_y(int);
+
     bool ifMineContains();
     void setMine();
     void setMine(bool);
 
     Cell & operator++ ();
+    Cell & operator= (Cell&);
 
 };
 #endif // CELL

@@ -8,8 +8,8 @@ class Field:public QWidget
 {
  Q_OBJECT
 protected:
-    const static int fieldLength_=10;
-    const static int fieldHeight_=10;
+    int fieldLength_;
+    int fieldHeight_;
     int countOfMine_;
     int countFlagMine_;
     Cell** cell;
@@ -17,6 +17,7 @@ protected:
 public:
     Field(QWidget *parent = 0);
     ~Field();
+    void openCell(int, int );
   /*  Field(int, int, int);
 
     void openCell(int, int);
@@ -40,6 +41,7 @@ public:
 protected slots:
     void on_DotClickedLeft();
     void on_DotClickedRight();
+    void on_DotClickedMid();
 
 
 

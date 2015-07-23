@@ -9,10 +9,12 @@
 
 Field::Field(QWidget *parent): QWidget(parent)
 {
-    //fieldLength_ = 9;
-   // fieldHeight_ = 9;
+    fieldLength_ = 9;
+    fieldHeight_ = 9;
     countOfMine_ = 10;
     QGridLayout *layout = new QGridLayout(this);
+    layout->setHorizontalSpacing(0);
+    layout->setVerticalSpacing(0);
     cell = new Cell*[fieldHeight_];
         for (int i = 0; i < fieldHeight_; ++i)
             cell[i] = new Cell[fieldLength_];
@@ -21,9 +23,14 @@ Field::Field(QWidget *parent): QWidget(parent)
         for (int j = 0; j < fieldLength_; ++j)
         {
             layout->addWidget(&cell[i][j], i, j);
-            connect(&cell[i][j
-                    ], SIGNAL(clicked_left()), this, SLOT(on_DotClickedLeft()));
+            //cell[i][j].setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+            cell[i][j].setFixedSize(19, 19);
+            cell[i][j].setIconSize(QSize(19,19));
+            cell[i][j].set_pos_x(j);
+            cell[i][j].set_pos_y(i);
+            connect(&cell[i][j], SIGNAL(clicked_left()), this, SLOT(on_DotClickedLeft()));
             connect(&cell[i][j], SIGNAL(clicked_right()), this, SLOT(on_DotClickedRight()));
+            connect(&cell[i][j], SIGNAL(clicked_right()), this, SLOT(on_DotClickedMid()));
         }
     }
 
@@ -41,12 +48,20 @@ for (int i = 0; i < countOfMine_; ++i)
 
 for (int i = 0; i < countOfMine_; ++i)
   {
+    /*
         bool mine;
         pos_X = rand() % fieldLength_;
         pos_Y = rand() % fieldHeight_;
         mine = cell[i / fieldLength_][i % fieldLength_].ifMineContains();
         cell[i / fieldLength_][i % fieldLength_].setMine(cell[pos_Y][pos_X].ifMineContains());
         cell[pos_Y][pos_X].setMine(mine);
+        */
+    Cell tempCell;
+    pos_X = rand() % fieldLength_;
+    pos_Y = rand() % fieldHeight_;
+    tempCell = cell[i / fieldLength_][i % fieldLength_];
+    cell[i / fieldLength_][i % fieldLength_]=cell[pos_Y][pos_X];
+    cell[pos_Y][pos_X]=tempCell;
   }
     for (int i = 0; i < fieldHeight_; ++i)
     {
@@ -75,6 +90,30 @@ for (int i = 0; i < countOfMine_; ++i)
     }
 
 }
+void Field::openCell(int pos_X, int pos_Y)
+{
+    if (cell[pos_Y][pos_X].get_cellMarker()||cell[pos_Y][pos_X].get_cellOpen())//защита помеченых клеток и открытых
+        return;
+    cell[pos_Y][pos_X].set_cellOpen();//откроем сначала
+    if (cell[pos_Y][pos_X].get_numberOfMineAround() != 0)// при натыкании на цифру выход
+        return;
+    if (pos_Y - 1 >= 0 && pos_X - 1 >= 0 ) //диагональ влево ввверх
+        openCell(pos_X - 1, pos_Y - 1);
+    if (pos_Y - 1 >= 0)     //вверх
+        openCell(pos_X, pos_Y-1);
+    if (pos_Y - 1 >= 0 && pos_X + 1 < fieldLength_) //диагональ вправо вверх
+        openCell(pos_X + 1, pos_Y - 1);
+    if (pos_X - 1 >= 0) //влево
+        openCell(pos_X - 1, pos_Y);
+    if (pos_X + 1 < fieldLength_) //вправо
+        openCell(pos_X + 1, pos_Y);
+    if (pos_Y + 1 <fieldHeight_ && pos_X - 1 >= 0)//диагональвлево вниз
+        openCell(pos_X - 1, pos_Y + 1);
+    if (pos_Y + 1 < fieldHeight_) // вниз
+        openCell(pos_X, pos_Y + 1);
+    if (pos_Y + 1 <fieldHeight_ && pos_X + 1 < fieldLength_)//диагональ вправо вниз
+        openCell(pos_X + 1, pos_Y + 1);
+}
 void Field::on_DotClickedRight()
 {
   Cell *t = reinterpret_cast<Cell*>(sender());
@@ -85,8 +124,14 @@ void Field::on_DotClickedRight()
 
 void Field::on_DotClickedLeft()
 {
+
  Cell *t = reinterpret_cast<Cell*>(sender());
- t->set_cellOpen();
+ openCell(t->get_pos_x(), t->get_pos_y());
+ //t->set_cellOpen();
+}
+void Field::on_DotClickedMid()
+{
+
 }
 
 Field::~Field()
@@ -106,44 +151,7 @@ Field::Field(int fieldLength, int fieldHeight, int countOfMine){
     completeField();
 }
 
-void Field::completeField(){
-    srand((unsigned)time(0));
-    int pos_X, pos_Y;
-    for (int i = 0; i < countOfMine_; ++i){
-        cell[i / fieldLength_][i % fieldLength_].setMine();
-    }
-for (int i = 0; i < countOfMine_; ++i){
-        Cell tempCell;
-        pos_X = rand() % fieldLength_;
-        pos_Y = rand() % fieldHeight_;
-        tempCell = cell[i / fieldLength_][i % fieldLength_];
-        cell[i / fieldLength_][i % fieldLength_] = cell[pos_Y][pos_X];
-        cell[pos_Y][pos_X] = tempCell;
-    }
 
-    for (int i = 0; i < fieldHeight_; ++i){
-        for (int j = 0; j < fieldLength_; ++j){
-            if (cell[i][j].ifMineContains()){
-                if ((i - 1 >= 0) && (j - 1 >= 0) && !cell[i - 1][j - 1].ifMineContains() )
-                    ++cell[i - 1][j - 1];
-                if ((i - 1 >= 0) && !cell[i - 1][j].ifMineContains())
-                    ++cell[i - 1][j];
-                if ((i - 1 >= 0) && (j + 1 < fieldLength_) && !cell[i - 1][j + 1].ifMineContains())
-                    ++cell[i - 1][j + 1];
-                if ((j - 1 >= 0) && !cell[i][j - 1].ifMineContains())
-                    ++cell[i][j - 1];
-                if ((j + 1 <fieldLength_) && !cell[i][j + 1].ifMineContains())
-                    ++cell[i][j + 1];
-                if ((i + 1 <fieldHeight_) && (j - 1 >= 0) && !cell[i + 1][j - 1].ifMineContains())
-                    ++cell[i + 1][j - 1];
-                if ((i + 1 <fieldHeight_) && !cell[i + 1][j].ifMineContains())
-                    ++cell[i + 1][j];
-                if ((i + 1 <fieldHeight_) && (j + 1 < fieldLength_) && !cell[i + 1][j + 1].ifMineContains())
-                    ++cell[i + 1][j + 1];
-            }
-        }
-    }
-}
 
 void Field::openCell(int pos_X, int pos_Y)
 {

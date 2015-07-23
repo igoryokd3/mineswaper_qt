@@ -7,20 +7,21 @@ Cell::Cell()
     numberOfMineAround_ = 0;
     cellOpen_ = false;
     cellMarker_ = false;
+    pos_x_ = 0;
+    pos_y_ = 0;
+    this->setIcon(QIcon(":/image/default_cell.bmp"));
 }
 Cell::Cell(QWidget *parent):QPushButton(parent)
 {
     numberOfMineAround_ = 0;
     cellOpen_ = false;
     cellMarker_ = false;
-    //button = new QMybutton();
     this->setIcon(QIcon(":/image/default_cell.bmp"));
 }
 bool Cell::get_cellMarker()
 {
     return cellMarker_;
 }
-// void set_cellMarker(bool);
 void Cell::change_cellMarker()
 {
     if (!get_cellOpen())
@@ -81,6 +82,24 @@ void Cell::increment_numberOfMineAround()
             ++numberOfMineAround_;
 }
 
+int Cell::get_pos_x()
+{
+    return pos_x_;
+}
+void Cell::set_pos_x(int pos_x)
+{
+    pos_x_ = pos_x;
+}
+
+int Cell::get_pos_y()
+{
+    return pos_y_;
+}
+void Cell::set_pos_y(int pos_y)
+{
+    pos_y_ = pos_y;
+}
+
 bool Cell::ifMineContains()
 {
     return numberOfMineAround_ == -1;
@@ -113,6 +132,13 @@ void Cell::mousePressEvent(QMouseEvent *event)
 
 Cell & Cell::operator++(){
     increment_numberOfMineAround();
+    return *this;
+}
+Cell & Cell::operator= (Cell& copy)
+{
+    this->cellOpen_=copy.cellOpen_;
+    this->cellMarker_=copy.cellMarker_;
+    this->numberOfMineAround_=copy.numberOfMineAround_;
     return *this;
 }
 
