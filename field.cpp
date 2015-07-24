@@ -30,7 +30,7 @@ Field::Field(QWidget *parent): QWidget(parent)
             cell[i][j].set_pos_y(i);
             connect(&cell[i][j], SIGNAL(clicked_left()), this, SLOT(on_DotClickedLeft()));
             connect(&cell[i][j], SIGNAL(clicked_right()), this, SLOT(on_DotClickedRight()));
-            connect(&cell[i][j], SIGNAL(clicked_right()), this, SLOT(on_DotClickedMid()));
+            connect(&cell[i][j], SIGNAL(clicked_mid()), this, SLOT(on_DotClickedMid()));
         }
     }
 
@@ -127,11 +127,54 @@ void Field::on_DotClickedLeft()
 
  Cell *t = reinterpret_cast<Cell*>(sender());
  openCell(t->get_pos_x(), t->get_pos_y());
+ //checkedOpenCell(t->get_pos_x(), t->get_pos_y());
  //t->set_cellOpen();
+}
+void Field::checkedOpenCell(int pos_X, int pos_Y){
+
+    if (cell[pos_Y][pos_X].get_cellOpen() && cell[pos_Y][pos_X].get_numberOfMineAround()){
+        int count = 0;
+            if (pos_Y - 1 >= 0 && pos_X - 1 >= 0 && cell[pos_Y-1][pos_X-1].get_cellMarker()) //диагональ влево ввверх
+                ++count;
+            if (pos_Y - 1 >= 0 && cell[pos_Y - 1][pos_X].get_cellMarker())     //вверх
+                ++count;
+            if (pos_Y - 1 >= 0 && pos_X + 1 < fieldLength_ && cell[pos_Y - 1][pos_X + 1].get_cellMarker()) //диагональ вправо вверх
+                ++count;
+            if (pos_X - 1 >= 0 && cell[pos_Y][pos_X - 1].get_cellMarker()) //влево
+                ++count;
+            if (pos_X + 1 < fieldLength_&& cell[pos_Y][pos_X + 1].get_cellMarker()) //вправо
+                ++count;
+            if (pos_Y + 1 <fieldHeight_ && pos_X - 1 >= 0 && cell[pos_Y + 1][pos_X - 1].get_cellMarker())//диагональвлево вниз
+                ++count;
+            if (pos_Y + 1 < fieldHeight_&& cell[pos_Y + 1][pos_X].get_cellMarker()) // вниз
+                ++count;
+            if (pos_Y + 1 <fieldHeight_ && pos_X + 1 < fieldLength_ && cell[pos_Y + 1][pos_X + 1].get_cellMarker())//диагональ вправо вниз
+                ++count;
+
+            if (count == cell[pos_Y][pos_X].get_numberOfMineAround()){
+                if (pos_Y - 1 >= 0 && pos_X - 1 >= 0) //диагональ влево ввверх
+                    openCell(pos_X - 1, pos_Y - 1);
+                if (pos_Y - 1 >= 0)     //вверх
+                    openCell(pos_X, pos_Y - 1);
+                if (pos_Y - 1 >= 0 && pos_X + 1 < fieldLength_) //диагональ вправо вверх
+                    openCell(pos_X + 1, pos_Y - 1);
+                if (pos_X - 1 >= 0 ) //влево
+                    openCell(pos_X - 1, pos_Y);
+                if (pos_X + 1 < fieldLength_) //вправо
+                    openCell(pos_X + 1, pos_Y);
+                if (pos_Y + 1 <fieldHeight_ && pos_X - 1 >= 0)//диагональвлево вниз
+                    openCell(pos_X - 1, pos_Y + 1);
+                if (pos_Y + 1 < fieldHeight_) // вниз
+                    openCell(pos_X, pos_Y + 1);
+                if (pos_Y + 1 <fieldHeight_ && pos_X + 1 < fieldLength_ )//диагональ вправо вниз
+                    openCell(pos_X + 1, pos_Y + 1);
+            }
+    }
 }
 void Field::on_DotClickedMid()
 {
-
+    Cell *t = reinterpret_cast<Cell*>(sender());
+    checkedOpenCell(t->get_pos_x(), t->get_pos_y());
 }
 
 Field::~Field()

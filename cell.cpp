@@ -120,14 +120,17 @@ void Cell::mousePressEvent(QMouseEvent *event)
   if (event->button() == Qt::LeftButton)
   {
     //  set_cellOpen();
-      emit clicked_left();
+          emit clicked_left();
   }
   if (event->button() == Qt::RightButton)
   {
      // change_cellMarker();
       emit clicked_right();
   }
-  if (event->button() == Qt::MidButton) emit clicked_mid();
+  if (event->button() == Qt::MidButton)
+  {
+      emit clicked_mid();
+  }
 }
 
 Cell & Cell::operator++(){

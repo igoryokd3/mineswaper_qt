@@ -18,6 +18,7 @@ public:
     Field(QWidget *parent = 0);
     ~Field();
     void openCell(int, int );
+    void checkedOpenCell(int, int);
   /*  Field(int, int, int);
 
     void openCell(int, int);
