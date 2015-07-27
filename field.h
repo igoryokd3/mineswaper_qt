@@ -16,9 +16,12 @@ protected:
     void completeField();
 public:
     Field(QWidget *parent = 0);
+    Field(int, int, int);
     ~Field();
     void openCell(int, int );
     void checkedOpenCell(int, int);
+    bool ifGameOver();
+    bool ifWin();
   /*  Field(int, int, int);
 
     void openCell(int, int);

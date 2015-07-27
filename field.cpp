@@ -4,6 +4,10 @@
 #include <QGridLayout>
 #include <ctime>
 
+////////
+#include <QDialog>
+#include <QDebug>
+
 
 
 
@@ -48,14 +52,6 @@ for (int i = 0; i < countOfMine_; ++i)
 
 for (int i = 0; i < countOfMine_; ++i)
   {
-    /*
-        bool mine;
-        pos_X = rand() % fieldLength_;
-        pos_Y = rand() % fieldHeight_;
-        mine = cell[i / fieldLength_][i % fieldLength_].ifMineContains();
-        cell[i / fieldLength_][i % fieldLength_].setMine(cell[pos_Y][pos_X].ifMineContains());
-        cell[pos_Y][pos_X].setMine(mine);
-        */
     Cell tempCell;
     pos_X = rand() % fieldLength_;
     pos_Y = rand() % fieldHeight_;
@@ -171,6 +167,48 @@ void Field::checkedOpenCell(int pos_X, int pos_Y){
             }
     }
 }
+bool Field::ifGameOver()
+{
+    for (int i = 0; i < fieldHeight_; ++i)
+    {
+        for (int j = 0; j < fieldLength_; ++j)
+        {
+            if (cell[i][j].ifMineContains() && cell[i][j].get_cellOpen())
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+bool Field::ifWin()
+{
+    if(countOfMine_ != countFlagMine_)
+        return false;
+    int count = 0;
+    for (int i = 0; i < fieldHeight_; ++i)
+        {
+            for (int j = 0; j < fieldLength_; ++j)
+            {
+                if (cell[i][j].ifMineContains() && !(cell[i][j].get_cellOpen()))
+                    count++;
+            }
+        }
+    if(count == countOfMine_)
+        return true;
+    return false;
+}
+Field::Field(int fieldLength, int fieldHeight, int countOfMine)
+{
+   // assert(countOfMine <  (fieldLength*fieldHeight));
+    fieldLength_ = fieldLength;
+    fieldHeight_ = fieldHeight;
+    countOfMine_ = countOfMine;
+    cell = new Cell*[fieldHeight_];
+    for (int i = 0; i < fieldHeight_; ++i)
+        cell[i] = new Cell[fieldLength_];
+    completeField();
+}
 void Field::on_DotClickedMid()
 {
     Cell *t = reinterpret_cast<Cell*>(sender());
@@ -182,85 +220,10 @@ Field::~Field()
     for (int i = 0; i < fieldHeight_; ++i)
         delete [] (cell[i]);
 }
+
+
 /*
-Field::Field(int fieldLength, int fieldHeight, int countOfMine){
-    assert(countOfMine <  (fieldLength*fieldHeight));
-    fieldLength_ = fieldLength;
-    fieldHeight_ = fieldHeight;
-    countOfMine_ = countOfMine;
-    cell = new Cell*[fieldHeight_];
-    for (int i = 0; i < fieldHeight_; ++i)
-        cell[i] = new Cell[fieldLength_];
-    completeField();
-}
 
-
-
-void Field::openCell(int pos_X, int pos_Y)
-{
-    if (cell[pos_Y][pos_X].get_cellMarker()||cell[pos_Y][pos_X].get_cellOpen())//защита помеченых клеток и открытых
-        return;
-    cell[pos_Y][pos_X].set_cellOpen(true);//откроем сначала
-    if (cell[pos_Y][pos_X].get_numberOfMineAround() != 0)// при натыкании на цифру выход
-        return;
-    if (pos_Y - 1 >= 0 && pos_X - 1 >= 0 ) //диагональ влево ввверх
-        openCell(pos_X - 1, pos_Y - 1);
-    if (pos_Y - 1 >= 0)     //вверх
-        openCell(pos_X, pos_Y-1);
-    if (pos_Y - 1 >= 0 && pos_X + 1 < fieldLength_) //диагональ вправо вверх
-        openCell(pos_X + 1, pos_Y - 1);
-    if (pos_X - 1 >= 0) //влево
-        openCell(pos_X - 1, pos_Y);
-    if (pos_X + 1 < fieldLength_) //вправо
-        openCell(pos_X + 1, pos_Y);
-    if (pos_Y + 1 <fieldHeight_ && pos_X - 1 >= 0)//диагональвлево вниз
-        openCell(pos_X - 1, pos_Y + 1);
-    if (pos_Y + 1 < fieldHeight_) // вниз
-        openCell(pos_X, pos_Y + 1);
-    if (pos_Y + 1 <fieldHeight_ && pos_X + 1 < fieldLength_)//диагональ вправо вниз
-        openCell(pos_X + 1, pos_Y + 1);
-}
-void Field::checkedOpenCell(int pos_X, int pos_Y){
-
-    if (cell[pos_Y][pos_X].get_cellOpen() && cell[pos_Y][pos_X].get_numberOfMineAround()){
-        int count = 0;
-            if (pos_Y - 1 >= 0 && pos_X - 1 >= 0 && cell[pos_Y-1][pos_X-1].get_cellMarker()) //диагональ влево ввверх
-                ++count;
-            if (pos_Y - 1 >= 0 && cell[pos_Y - 1][pos_X].get_cellMarker())     //вверх
-                ++count;
-            if (pos_Y - 1 >= 0 && pos_X + 1 < fieldLength_ && cell[pos_Y - 1][pos_X + 1].get_cellMarker()) //диагональ вправо вверх
-                ++count;
-            if (pos_X - 1 >= 0 && cell[pos_Y][pos_X - 1].get_cellMarker()) //влево
-                ++count;
-            if (pos_X + 1 < fieldLength_&& cell[pos_Y][pos_X + 1].get_cellMarker()) //вправо
-                ++count;
-            if (pos_Y + 1 <fieldHeight_ && pos_X - 1 >= 0 && cell[pos_Y + 1][pos_X - 1].get_cellMarker())//диагональвлево вниз
-                ++count;
-            if (pos_Y + 1 < fieldHeight_&& cell[pos_Y + 1][pos_X].get_cellMarker()) // вниз
-                ++count;
-            if (pos_Y + 1 <fieldHeight_ && pos_X + 1 < fieldLength_ && cell[pos_Y + 1][pos_X + 1].get_cellMarker())//диагональ вправо вниз
-                ++count;
-
-            if (count == cell[pos_Y][pos_X].get_numberOfMineAround()){
-                if (pos_Y - 1 >= 0 && pos_X - 1 >= 0) //диагональ влево ввверх
-                    openCell(pos_X - 1, pos_Y - 1);
-                if (pos_Y - 1 >= 0)     //вверх
-                    openCell(pos_X, pos_Y - 1);
-                if (pos_Y - 1 >= 0 && pos_X + 1 < fieldLength_) //диагональ вправо вверх
-                    openCell(pos_X + 1, pos_Y - 1);
-                if (pos_X - 1 >= 0 ) //влево
-                    openCell(pos_X - 1, pos_Y);
-                if (pos_X + 1 < fieldLength_) //вправо
-                    openCell(pos_X + 1, pos_Y);
-                if (pos_Y + 1 <fieldHeight_ && pos_X - 1 >= 0)//диагональвлево вниз
-                    openCell(pos_X - 1, pos_Y + 1);
-                if (pos_Y + 1 < fieldHeight_) // вниз
-                    openCell(pos_X, pos_Y + 1);
-                if (pos_Y + 1 <fieldHeight_ && pos_X + 1 < fieldLength_ )//диагональ вправо вниз
-                    openCell(pos_X + 1, pos_Y + 1);
-            }
-    }
-}
 
 
 int Field::get_closedCell(){
