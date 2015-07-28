@@ -116,6 +116,8 @@ void Field::on_DotClickedRight()
  // if(t->get_cellOpen())
     //  return;
   t->change_cellMarker();
+  if(ifWin())
+      emit Win();
 }
 
 void Field::on_DotClickedLeft()
@@ -125,6 +127,10 @@ void Field::on_DotClickedLeft()
  openCell(t->get_pos_x(), t->get_pos_y());
  //checkedOpenCell(t->get_pos_x(), t->get_pos_y());
  //t->set_cellOpen();
+ if(ifWin())
+     emit Win();
+ if(ifGameOver())
+     emit Lose();
 }
 void Field::checkedOpenCell(int pos_X, int pos_Y){
 

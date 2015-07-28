@@ -14,11 +14,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
     cell.cpp \
-    field.cpp
+    field.cpp \
+    game.cpp
 
 HEADERS  += \
     cell.h \
-    field.h
+    field.h \
+    game.h
 
 
 

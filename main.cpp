@@ -2,26 +2,17 @@
 #include <QMainWindow>
 #include <QApplication>
 #include "field.h"
-
-#include <QDebug>
+#include"game.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     QMainWindow w;
-    Field field;
+    Game game;
 
 
-    w.setCentralWidget(&field);
+   // w.setCentralWidget(&field);
     w.show();
-    qDebug()<<"start";
-    if(field.ifWin())
-    {
-        qDebug()<<"win/nwin/nwin/nwin";
-    }
-    if(field.ifGameOver())
-    {
-        qDebug()<<"lose/nlose/nlose/nlose";
-    }
+
     return a.exec();
 }

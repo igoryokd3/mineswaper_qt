@@ -42,6 +42,9 @@ public:
     bool set_Marker(int, int);
     bool get_ifOpenCell(int, int);
     bool get_ifMarkerCell(int, int);*/
+signals:
+    void Win();
+    void Lose();
 protected slots:
     void on_DotClickedLeft();
     void on_DotClickedRight();
