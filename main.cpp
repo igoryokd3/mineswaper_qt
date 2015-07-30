@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     Game game;
 
 
-   // w.setCentralWidget(&field);
+    w.setCentralWidget(&game);
     w.show();
 
     return a.exec();

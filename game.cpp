@@ -1,23 +1,16 @@
+#include "field.h"
 #include "game.h"
 
 Game::Game()
 {
-    field = new Field(10,10,10);
-    connect(field, SIGNAL(Win()), this, SLOT(youWin()));
-    connect(field, SIGNAL(Lose()), this, SLOT(youLose()));
+    field = new Field(this);
+    connect(field, SIGNAL (Win()), this, SLOT(YouWin()));
 }
-
-Game::~Game()
+void Game::youWin()
 {
-    delete field;
+    qDebug()<<"You Win!!!!!!!!!!!!!!!!!!!!!!!1";
 }
-
-void youWin()
+void Game::youLose()
 {
-    qDebug()<<"you Win!!!!!!!!!!!!!!!!";
+    qDebug()<<"You Lose!!!!!!!!!!!!!!!1!1!";
 }
-void youLose()
-{
-    qDebug()<<"you Lose!!!!!!!!!!!!!!!";
-}
-

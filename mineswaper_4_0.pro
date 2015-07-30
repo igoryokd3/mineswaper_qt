@@ -28,3 +28,4 @@ RESOURCES += \
     source.qrc
 
 DISTFILES +=
+INCLUDEPATH += .

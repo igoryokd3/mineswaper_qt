@@ -1,19 +1,21 @@
-#ifndef GAME_H
-#define GAME_H
-
-#include "field.h"
+# ifndef GAME_H
+# define GAME_H
+# include <QWidget>
+# include <QLabel>
 #include <QDebug>
 
-class Game
-{
-protected:
-    Field *field;
+class Field;
+
+class Game :public QWidget {
+  Q_OBJECT
 public:
-    Game();
-    ~Game();
-protected slots:
-    void youWin();
-    void youLose();
+  Game();
+public slots:
+  void youWin();
+  void youLose();
+protected:
+  Field *field;
+
 };
 
-#endif // GAME_H
+#endif
