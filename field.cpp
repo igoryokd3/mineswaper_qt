@@ -3,6 +3,7 @@
 #include <ctime>
 #include <QGridLayout>
 #include <ctime>
+#include <QMessageBox>
 
 ////////
 #include <QDialog>
@@ -128,9 +129,11 @@ void Field::on_DotClickedLeft()
  //checkedOpenCell(t->get_pos_x(), t->get_pos_y());
  //t->set_cellOpen();
  if(ifWin())
-     emit Win();
+     QMessageBox::information(0, "Information", "win");
+    // emit Win();
  if(ifGameOver())
-     emit Lose();
+     QMessageBox::information(0, "Information", "lose");
+    // emit Lose();
 }
 void Field::checkedOpenCell(int pos_X, int pos_Y){
 
@@ -189,20 +192,22 @@ bool Field::ifGameOver()
 }
 bool Field::ifWin()
 {
-    if(countOfMine_ != countFlagMine_)
-        return false;
-    int count = 0;
+
+    int count_flag = 0, count_closed_cell = 0;
     for (int i = 0; i < fieldHeight_; ++i)
         {
             for (int j = 0; j < fieldLength_; ++j)
             {
-                if (cell[i][j].ifMineContains() && !(cell[i][j].get_cellOpen()))
-                    count++;
+                if (cell[i][j].get_cellMarker())
+                    ++count_flag;
+                if (!cell[i][j].get_cellOpen())
+                    ++count_closed_cell;
             }
         }
-    if(count == countOfMine_)
+    if(countOfMine_ == count_flag && countOfMine_ == count_closed_cell)
         return true;
-    return false;
+    else
+        return false;
 }
 Field::Field(int fieldLength, int fieldHeight, int countOfMine)
 {
@@ -219,6 +224,12 @@ void Field::on_DotClickedMid()
 {
     Cell *t = reinterpret_cast<Cell*>(sender());
     checkedOpenCell(t->get_pos_x(), t->get_pos_y());
+    if(ifWin())
+        QMessageBox::information(0, "Information", "win");
+       // emit Win();
+    if(ifGameOver())
+        QMessageBox::information(0, "Information", "lose");
+       // emit Lose();
 }
 
 Field::~Field()

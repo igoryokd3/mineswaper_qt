@@ -1,5 +1,6 @@
 #include "field.h"
 #include "game.h"
+#include <QMessageBox>
 
 Game::Game()
 {
@@ -8,9 +9,9 @@ Game::Game()
 }
 void Game::youWin()
 {
-    qDebug()<<"You Win!!!!!!!!!!!!!!!!!!!!!!!1";
+    QMessageBox::information(0, "Information", "win");
 }
 void Game::youLose()
 {
-    qDebug()<<"You Lose!!!!!!!!!!!!!!!1!1!";
+    QMessageBox::information(0, "Information", "lost");
 }

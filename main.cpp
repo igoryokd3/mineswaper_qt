@@ -7,12 +7,15 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    QMainWindow w;
+    QMainWindow mainWindow;
     Game game;
 
+    QMenuBar *menuBar; // меню
 
-    w.setCentralWidget(&game);
-    w.show();
+    mainWindow.setCentralWidget(&game);
+    menuBar = mainWindow.menuBar();
+
+    mainWindow.show();
 
     return a.exec();
 }
