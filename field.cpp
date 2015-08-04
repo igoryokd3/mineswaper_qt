@@ -129,11 +129,9 @@ void Field::on_DotClickedLeft()
  //checkedOpenCell(t->get_pos_x(), t->get_pos_y());
  //t->set_cellOpen();
  if(ifWin())
-     QMessageBox::information(0, "Information", "win");
-    // emit Win();
+     emit Win();
  if(ifGameOver())
-     QMessageBox::information(0, "Information", "lose");
-    // emit Lose();
+     emit Lose();
 }
 void Field::checkedOpenCell(int pos_X, int pos_Y){
 
@@ -225,11 +223,9 @@ void Field::on_DotClickedMid()
     Cell *t = reinterpret_cast<Cell*>(sender());
     checkedOpenCell(t->get_pos_x(), t->get_pos_y());
     if(ifWin())
-        QMessageBox::information(0, "Information", "win");
-       // emit Win();
+        emit Win();
     if(ifGameOver())
-        QMessageBox::information(0, "Information", "lose");
-       // emit Lose();
+        emit Lose();
 }
 
 Field::~Field()
